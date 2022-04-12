@@ -23,8 +23,26 @@ export default class App extends React.Component {
         this.setState({ ...this.state, todos: res.data.data });
       })
       .catch((err) => {
-        console.log(err);
+        this.setState({ ...this.state, errorMessage: err.response.data.message });
       });
+  };
+
+  postNewTodo = () => {
+    //update state and post to api endpoint, can use .concat to add new info to existing array/returns new array
+    //post takes two arguments URL and data object you want sent to the api endpoint
+    axios
+      .post(URL, { name: this.state.todoName })
+      .then((res) => {
+        this.setState({ ...this.state, todos: this.state.todos.concat(res.data.data) });
+      })
+      .catch((err) => {
+        this.setState({ ...this.state, errorMessage: err.response.data.message });
+      });
+  };
+
+  todoFormSubmit = (e) => {
+    e.preventDefault();
+    this.postNewTodo();
   };
 
   componentDidMount() {
@@ -34,10 +52,10 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div id="error">{this.state.error}</div>
+        <div id="error">{this.state.errorMessage}</div>
         <TodoList todos={this.state.todos} />
 
-        <Form />
+        <Form todoFormSubmit={this.todoFormSubmit} />
       </div>
     );
   }
