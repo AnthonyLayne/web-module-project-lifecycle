@@ -15,6 +15,8 @@ export default class App extends React.Component {
   };
 
   getAllTodos = () => {
+    //res.data.data
+    //res.data.message
     axios
       .get(URL)
       .then((res) => {
@@ -25,15 +27,15 @@ export default class App extends React.Component {
       });
   };
 
-  postAllTodos = () => {};
-
-  patchAllTodos = () => {};
+  componentDidMount() {
+    this.getAllTodos();
+  }
 
   render() {
     return (
       <div className="App">
         <div id="error">{this.state.error}</div>
-        <TodoList />
+        <TodoList todos={this.state.todos} />
 
         <Form />
       </div>
