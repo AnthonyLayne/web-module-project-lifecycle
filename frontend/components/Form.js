@@ -5,11 +5,16 @@ import React from "react";
 export default class Form extends React.Component {
   render() {
     return (
-      <div>
-        <input></input>
+      <form onSubmit={this.props.todoFormSubmit}>
+        <input
+          value={this.props.todoName}
+          onChange={this.props.todoHandleChange}
+          type="text"
+          placeholder="type a new todo"
+        ></input>
         <button>Submit</button>
-        <button>Clear Completed Todos</button>
-      </div>
+        <button>Toggle Completed</button>
+      </form>
     );
   }
 }

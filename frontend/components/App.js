@@ -14,6 +14,10 @@ export default class App extends React.Component {
     todoName: "",
   };
 
+  reset = () => {
+    this.setState({ ...this.state, todoName: "" });
+  };
+
   getAllTodos = () => {
     //res.data.data
     //res.data.message
@@ -34,6 +38,7 @@ export default class App extends React.Component {
       .post(URL, { name: this.state.todoName })
       .then((res) => {
         this.setState({ ...this.state, todos: this.state.todos.concat(res.data.data) });
+        this.reset();
       })
       .catch((err) => {
         this.setState({ ...this.state, errorMessage: err.response.data.message });
@@ -43,6 +48,10 @@ export default class App extends React.Component {
   todoFormSubmit = (e) => {
     e.preventDefault();
     this.postNewTodo();
+  };
+
+  todoHandleChange = (e) => {
+    this.setState({ ...this.state, todoName: e.target.value });
   };
 
   componentDidMount() {
@@ -55,7 +64,11 @@ export default class App extends React.Component {
         <div id="error">{this.state.errorMessage}</div>
         <TodoList todos={this.state.todos} />
 
-        <Form todoFormSubmit={this.todoFormSubmit} />
+        <Form
+          todoFormSubmit={this.todoFormSubmit}
+          todoHandleChange={this.todoHandleChange}
+          todoName={this.state.todoName}
+        />
       </div>
     );
   }
