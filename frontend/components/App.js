@@ -6,6 +6,8 @@ import Form from "./Form";
 
 const URL = "http://localhost:9000/api/todos";
 
+//NOTE: must use this and this.state
+
 export default class App extends React.Component {
   state = {
     todos: [],
@@ -45,6 +47,27 @@ export default class App extends React.Component {
       });
   };
 
+  toggleCompleteTodo = (id) => () => {
+    axios
+      .patch(`${URL}/${id}`)
+      .then((res) => {
+        this.setState({
+          ...this.state,
+          todos: this.state.todos.map((todo) => {
+            if (todo.id !== id) return todo;
+            return res.data.data;
+          }),
+        });
+      })
+      .catch((err) => {
+        this.setState({ ...this.state, errorMessage: err.response.data.message });
+      });
+  };
+
+  toggleDisplay = () => {
+    this.setState({ ...this.state, completedTodo: !this.state.completedTodo });
+  };
+
   todoFormSubmit = (e) => {
     e.preventDefault();
     this.postNewTodo();
@@ -62,12 +85,18 @@ export default class App extends React.Component {
     return (
       <div className="App">
         <div id="error">{this.state.errorMessage}</div>
-        <TodoList todos={this.state.todos} />
+        <TodoList
+          todos={this.state.todos}
+          completedTodo={this.state.completedTodo}
+          toggleCompleteTodo={this.toggleCompleteTodo}
+        />
 
         <Form
           todoFormSubmit={this.todoFormSubmit}
           todoHandleChange={this.todoHandleChange}
+          toggleDisplay={this.toggleDisplay}
           todoName={this.state.todoName}
+          completedTodo={this.state.completedTodo}
         />
       </div>
     );

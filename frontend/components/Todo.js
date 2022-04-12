@@ -4,6 +4,10 @@ import React from "react";
 
 export default class Todo extends React.Component {
   render() {
-    return <div>{/* <p>{}</p>; */}</div>;
+    return (
+      <div onClick={this.props.toggleCompleteTodo(this.props.todo.id)}>
+        {this.props.todo.name} {this.props.todo.completed ? "✔️" : ""}
+      </div>
+    );
   }
 }
