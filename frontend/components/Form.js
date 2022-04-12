@@ -1,7 +1,13 @@
-import React from 'react'
+import React from "react";
 
 export default class Form extends React.Component {
   render() {
-    return null
+    return (
+      <div>
+        <input></input>
+        <button>Submit</button>
+        <button>Clear Completed Todos</button>
+      </div>
+    );
   }
 }
